@@ -1,66 +1,124 @@
 <!DOCTYPE html>
-<html lang="en">
+<!-- Página principal generada según el boceto dibujado -->
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <title>Franco Peretti Magistrello</title>
+    <!-- A continuación se incluye CSS embebido dentro de la etiqueta <style>. Sigue siendo código HTML,
+         pero aclaramos que aquí se usan reglas de CSS para dar forma a los “burbujas” y layout. -->
+    <style>
+      /* Rectángulo superior y burbujas de navegación */
+      header {
+        width: 100%;
+        padding: 10px 0;
+        background: #f2f2f2;
+        text-align: center;
+        /* La siguiente propiedad es CSS */
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+      }
+      .bubble {
+        display: inline-block;
+        padding: 10px 25px;
+        border: 2px solid #333;
+        border-radius: 999px; /* hace la forma de cápsula */
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 14px;
+        font-weight: bold;
+        text-decoration: none;
+        color: #000;
+        background: #fff;
+      }
+      /* Layout principal:  sidebar + contenido */
+      .container {
+        display: table;
+        width: 100%;
+      }
+      .sidebar {
+        display: table-cell;
+        width: 250px;
+        padding: 20px;
+        vertical-align: top;
+        text-align: center;
+      }
+      .content {
+        display: table-cell;
+        padding: 20px;
+        text-align: center;
+      }
+      /* Burbuja de los temas centrales */
+      .topic {
+        display: inline-block;
+        margin: 10px;
+        width: 160px;
+        height: 60px;
+        line-height: 60px;
+        border: 2px solid #333;
+        border-radius: 999px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        text-decoration: none;
+        color: #000;
+        background: #ffffff;
+      }
+      h1 {
+        font-family: "Times New Roman", serif;
+        font-size: 36px;
+        margin: 40px 0 20px 0;
+      }
+      /* Foto placeholder */
+      .photo {
+        width: 180px;
+        height: 230px;
+        border: 2px solid #333;
+        margin: 0 auto 10px auto;
+      }
+      body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+    </style>
   </head>
-  <!-- Added inline CSS properties in the style attribute below (still valid HTML)
-       to ensure a full‑page landscape background → uses CSS but remains inside HTML -->
-  <body style="background-image:url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1600&q=80');background-size:cover;background-attachment:fixed;background-position:center;" text="#000000" link="#0000EE" vlink="#551A8B" alink="#FF0000"> <!-- Imagen libre de Unsplash (CSS embebido dentro de atributo style) -->
+  <body>
+    <!-- RECTÁNGULO SUPERIOR CON TRES BURBUJAS → cada una enlaza a su recurso -->
     <header>
-      <h1 align="center">Franco Peretti Magistrello</h1>
+      <a class="bubble" href="https://chat.openai.com" target="_blank">Chat&nbsp;GPT</a>
+      <a class="bubble" href="about.html">About&nbsp;Me</a>
+      <a class="bubble" href="#" title="(Futuro) Cambiar idioma">Lenguajes</a>
     </header>
 
-    <main align="center">
-      <!-- Navigation squares → now link to separate files instead of in‑page anchors -->
-      <table align="center" cellpadding="20">
-        <tr>
-          <td>
-            <a href="about.html">
-              <div style="width:150px;height:150px;border:2px solid #333;display:flex;align-items:center;justify-content:center;font-family:Arial,Helvetica,sans-serif;font-weight:bold;background-color:#ffffff;">About&nbsp;Me</div>
-            </a>
-          </td>
-          <td>
-            <a href="university.html">
-              <div style="width:150px;height:150px;border:2px solid #333;display:flex;align-items:center;justify-content:center;font-family:Arial,Helvetica,sans-serif;font-weight:bold;background-color:#ffffff;">University</div>
-            </a>
-          </td>
-          <td>
-            <a href="computing.html">
-              <div style="width:150px;height:150px;border:2px solid #333;display:flex;align-items:center;justify-content:center;font-family:Arial,Helvetica,sans-serif;font-weight:bold;background-color:#ffffff;">Computing</div>
-            </a>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <a href="languages.html">
-              <div style="width:150px;height:150px;border:2px solid #333;display:flex;align-items:center;justify-content:center;font-family:Arial,Helvetica,sans-serif;font-weight:bold;background-color:#ffffff;">Languages</div>
-            </a>
-          </td>
-          <td>
-            <a href="finance.html">
-              <div style="width:150px;height:150px;border:2px solid #333;display:flex;align-items:center;justify-content:center;font-family:Arial,Helvetica,sans-serif;font-weight:bold;background-color:#ffffff;">Finance</div>
-            </a>
-          </td>
-          <td>
-            <a href="family.html">
-              <div style="width:150px;height:150px;border:2px solid #333;display:flex;align-items:center;justify-content:center;font-family:Arial,Helvetica,sans-serif;font-weight:bold;background-color:#ffffff;">Family&nbsp;Tree</div>
-            </a>
-          </td>
-        </tr>
-      </table>
+    <div class="container">
+      <!-- BARRA LATERAL IZQUIERDA CON FOTO Y DESCRIPCIÓN -->
+      <aside class="sidebar">
+        <div class="photo"><!-- Aquí irá la foto --></div>
+        <p>Data Engineer / Finance enthusiast.<br />Coder &amp; traveler.</p>
+      </aside>
 
-      <!-- Detailed sections moved to individual HTML files as requested -->
+      <!-- CONTENIDO PRINCIPAL -->
+      <section class="content">
+        <h1>Franco&nbsp;Peretti&nbsp;Magistrello</h1>
+        <!-- Nueve burbujas de temas → cada una abre un HTML nuevo -->
+        <a class="topic" href="finanzas.html">Finanzas</a>
+        <a class="topic" href="universidad.html">Universidad</a>
+        <a class="topic" href="computacion.html">Computación</a>
+        <br />
+        <a class="topic" href="leyes.html">Leyes</a>
+        <a class="topic" href="filosofia.html">Filosofía</a>
+        <a class="topic" href="idiomas.html">Idiomas</a>
+        <br />
+        <a class="topic" href="arbol-familiar.html">Árbol Familiar</a>
+        <a class="topic" href="proyectos.html">Proyectos</a>
+        <a class="topic" href="politico.html">Político</a>
+      </section>
+    </div>
 
-      <!-- Extra: simple contact link -->
-      <p><a href="mailto:franco@example.com">Contact me by email</a></p>
-    </main>
-
-    <footer align="center">
-      <p>&copy; 2025 Franco Peretti Magistrello</p>
+    <footer style="text-align:center;padding:10px 0;background:#f2f2f2;">
+      &copy; 2025 Franco Peretti Magistrello
     </footer>
   </body>
 </html>
+
 
 
 
