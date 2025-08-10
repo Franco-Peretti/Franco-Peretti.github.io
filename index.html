@@ -1,125 +1,237 @@
 <!DOCTYPE html>
-<!-- Página principal generada según el boceto dibujado -->
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Franco Peretti Magistrello</title>
-    <!-- A continuación se incluye CSS embebido dentro de la etiqueta <style>. Sigue siendo código HTML,
-         pero aclaramos que aquí se usan reglas de CSS para dar forma a los “burbujas” y layout. -->
-    <style>
-      /* Rectángulo superior y burbujas de navegación */
-      header {
-        width: 100%;
-        padding: 10px 0;
-        background: #f2f2f2;
-        text-align: center;
-        /* La siguiente propiedad es CSS */
-        display: flex;
-        justify-content: center;
-        gap: 30px;
-      }
-      .bubble {
-        display: inline-block;
-        padding: 10px 25px;
-        border: 2px solid #333;
-        border-radius: 999px; /* hace la forma de cápsula */
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 14px;
-        font-weight: bold;
-        text-decoration: none;
-        color: #000;
-        background: #fff;
-      }
-      /* Layout principal:  sidebar + contenido */
-      .container {
-        display: table;
-        width: 100%;
-      }
-      .sidebar {
-        display: table-cell;
-        width: 250px;
-        padding: 20px;
-        vertical-align: top;
-        text-align: center;
-      }
-      .content {
-        display: table-cell;
-        padding: 20px;
-        text-align: center;
-      }
-      /* Burbuja de los temas centrales */
-      .topic {
-        display: inline-block;
-        margin: 10px;
-        width: 160px;
-        height: 60px;
-        line-height: 60px;
-        border: 2px solid #333;
-        border-radius: 999px;
-        font-family: Arial, Helvetica, sans-serif;
-        font-weight: bold;
-        text-decoration: none;
-        color: #000;
-        background: #ffffff;
-      }
-      h1 {
-        font-family: "Times New Roman", serif;
-        font-size: 36px;
-        margin: 40px 0 20px 0;
-      }
-      /* Foto placeholder */
-      .photo {
-        width: 180px;
-        height: 230px;
-        border: 2px solid #333;
-        margin: 0 auto 10px auto;
-      }
-      body {
-        margin: 0;
-        font-family: Arial, Helvetica, sans-serif;
-      }
-    </style>
-  </head>
-  <body>
-    <!-- RECTÁNGULO SUPERIOR CON TRES BURBUJAS → cada una enlaza a su recurso -->
-    <header>
-      <a class="bubble" href="https://chat.openai.com" target="_blank">Chat&nbsp;GPT</a>
-      <a class="bubble" href="about.html">About&nbsp;Me</a>
-      <a class="bubble" href="#" title="(Futuro) Cambiar idioma">Lenguajes</a>
-    </header>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Blog | Lectura con pronunciación</title>
+  <style>
+    :root{
+      --bg:#0b0c10; --panel:#111318; --ink:#e8e8ea; --muted:#a7adbb; --accent:#5eead4;
+      --chip:#1a1d24; --chip-border:#262a33; --chip-ink:#cfd3dc
+    }
+    html,body{height:100%}
+    body{
+      margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      background: linear-gradient(180deg, var(--bg), #0d1117 55%);
+      color: var(--ink);
+    }
+    header{
+      position: sticky; top:0; z-index:50;
+      backdrop-filter: blur(8px);
+      background: color-mix(in srgb, var(--panel) 80%, transparent);
+      border-bottom: 1px solid #1f232b;
+    }
+    .wrap{max-width: 920px; margin: 0 auto; padding: 14px 18px;}
+    .brand{display:flex; gap:12px; align-items:center}
+    .dot{width:10px; height:10px; border-radius:999px; background:var(--accent); box-shadow:0 0 18px var(--accent)}
+    h1{font-size: clamp(20px, 2vw, 26px); margin:0}
 
-    <div class="container">
-      <!-- BARRA LATERAL IZQUIERDA CON FOTO Y DESCRIPCIÓN -->
-      <aside class="sidebar">
-        <div class="photo"><!-- Aquí irá la foto --></div>
-        <p>Data Engineer / Finance enthusiast.<br />Coder &amp; traveler.</p>
+    main{padding: 18px}
+    .grid{display:grid; grid-template-columns: 280px 1fr; gap: 18px}
+    @media (max-width: 900px){ .grid{grid-template-columns: 1fr} }
+
+    .card{
+      background: var(--panel); border: 1px solid #1f232b; border-radius: 16px; padding: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.28);
+    }
+
+    .controls{display:flex; flex-wrap:wrap; gap:8px; align-items:center}
+    .chip{background: var(--chip); border:1px solid var(--chip-border); color:var(--chip-ink);
+      padding:8px 10px; border-radius: 999px; font-size: 12px}
+    .chip input{vertical-align: middle; margin-right:6px}
+    .chip select, .chip button{background:transparent; color:inherit; border:none; font:inherit}
+    .chip button{cursor:pointer}
+
+    article#book{line-height:1.75; font-size: 18px}
+    article#book p{margin: 0 0 1rem 0}
+
+    /* Word button */
+    .word{all:unset; cursor:pointer; padding: 0 2px; border-radius: 6px; position:relative}
+    .word:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+    .word:hover{background: #19202a}
+    .word.playing{background:#0d3b2e}
+
+    .legend{font-size:12px; color: var(--muted)}
+    .kbd{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; background:#141821; border:1px solid #242938; padding:1px 6px; border-radius:6px}
+
+    footer{color:var(--muted); font-size:12px; padding: 10px 18px 24px}
+    a{color:#8bacee}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <span class="dot" aria-hidden="true"></span>
+      <h1>Lectura con pronunciación (modo blog)</h1>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="grid">
+      <aside class="card">
+        <h2 style="margin-top:0">Ajustes</h2>
+        <div class="controls">
+          <span class="chip"><label><input id="useTTS" type="checkbox" checked> Usar voz del navegador (Web Speech)</label></span>
+          <span class="chip"><label><input id="openCambridge" type="checkbox"> Abrir Cambridge al hacer clic</label></span>
+          <span class="chip">Voz: <select id="voiceSelect" aria-label="Seleccionar voz"></select></span>
+          <span class="chip">Velocidad: <input id="rate" type="range" min="0.6" max="1.4" step="0.05" value="1"/></span>
+          <button id="toggleWrap" class="chip">Reprocesar texto</button>
+        </div>
+        <p class="legend" style="margin-top:10px">Tip: clic normal pronuncia; <span class="kbd">Ctrl</span> + clic abre Cambridge para esa palabra.</p>
+        <p class="legend">Si desactivás "Usar voz del navegador", los clics sólo abrirán Cambridge.</p>
+        <hr style="border-color:#1f232b" />
+        <h3 style="margin-top:0">Cómo pegar tu capítulo</h3>
+        <ol class="legend">
+          <li>Mantené el formato original (títulos, cursivas, citas) dentro de <code>&lt;article id="book"&gt;...</code>.</li>
+          <li>El script no altera tu HTML: sólo envuelve las <em>palabras</em> en botones accesibles.</li>
+          <li>Podés desactivar/activar el envoltorio con el botón "Reprocesar texto" si editás el contenido.</li>
+        </ol>
       </aside>
 
-      <!-- CONTENIDO PRINCIPAL -->
-      <section class="content">
-        <h1>Franco&nbsp;Peretti&nbsp;Magistrello</h1>
-        <!-- Nueve burbujas de temas → cada una abre un HTML nuevo -->
-        <a class="topic" href="finanzas.html">Finanzas</a>
-        <a class="topic" href="universidad.html">Universidad</a>
-        <a class="topic" href="computacion.html">Computación</a>
-        <br />
-        <a class="topic" href="leyes.html">Leyes</a>
-        <a class="topic" href="filosofia.html">Filosofía</a>
-        <a class="topic" href="idiomas.html">Idiomas</a>
-        <br />
-        <a class="topic" href="arbol-familiar.html">Árbol Familiar</a>
-        <a class="topic" href="proyectos.html">Proyectos</a>
-        <a class="topic" href="politico.html">Político</a>
+      <section class="card">
+        <article id="book">
+          <h2>Sobre esta página</h2>
+          <p>
+            Esta es una demostración: podés pegar aquí un fragmento de tu libro o apunte.
+            Al hacer clic en cualquier palabra, se pronunciará en inglés usando la voz del navegador.
+            Con <span class="kbd">Ctrl</span> + clic, se abrirá la entrada en el Cambridge Dictionary.
+          </p>
+          <p>
+            <em>Ejemplo (en inglés, para oír pronunciación):</em> “Learning consistent pronunciation while reading
+            authentic <strong>texts</strong> helps build vocabulary and confidence.”
+          </p>
+          <blockquote>“Practice makes progress.”</blockquote>
+        </article>
       </section>
     </div>
+  </main>
 
-    <footer style="text-align:center;padding:10px 0;background:#f2f2f2;">
-      &copy; 2025 Franco Peretti Magistrello
-    </footer>
-  </body>
+  <footer class="wrap">
+    Fuentes útiles: 
+    <a href="https://developer.mozilla.org/es/docs/Web/API/SpeechSynthesis" target="_blank" rel="noopener">MDN: Web Speech API (SpeechSynthesis)</a> ·
+    <a href="https://developer.mozilla.org/es/docs/Web/API/Document/createTreeWalker" target="_blank" rel="noopener">MDN: TreeWalker para recorrer nodos de texto</a> ·
+    <a href="https://dictionary.cambridge.org/" target="_blank" rel="noopener">Cambridge Dictionary</a>
+  </footer>
+
+  <script>
+    // --- Utilities ----------------------------------------------------------
+    const cambridgeURL = (word) => `https://dictionary.cambridge.org/dictionary/english/${encodeURIComponent(word.toLowerCase())}`;
+
+    function getSelectedVoice(voices){
+      const sel = document.getElementById('voiceSelect');
+      const id = sel.value;
+      return voices.find(v => v.voiceURI === id) || voices.find(v => /en-GB|English \(Great Britain\)/i.test(v.lang+v.name)) || voices.find(v => /^en/i.test(v.lang)) || voices[0];
+    }
+
+    function populateVoices(){
+      const sel = document.getElementById('voiceSelect');
+      sel.innerHTML = '';
+      const voices = speechSynthesis.getVoices();
+      const english = voices.filter(v => /^en/i.test(v.lang));
+      const list = english.length ? english : voices;
+      list.forEach(v => {
+        const opt = document.createElement('option');
+        opt.value = v.voiceURI; opt.textContent = `${v.name} (${v.lang})`;
+        sel.appendChild(opt);
+      });
+    }
+
+    // --- Word wrapping ------------------------------------------------------
+    const WORD_REGEX = /(\p{L}[\p{L}\p{M}'’-]*\p{L}|\p{L})/gu; // words incl. accents & apostrophes
+
+    function wrapWordsInNode(root){
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+        acceptNode(node){
+          if(!node.nodeValue.trim()) return NodeFilter.FILTER_REJECT; // skip pure whitespace
+          if(node.parentElement.closest('.word')) return NodeFilter.FILTER_REJECT; // already wrapped
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      });
+
+      const textNodes = [];
+      while(walker.nextNode()) textNodes.push(walker.currentNode);
+
+      textNodes.forEach(node => {
+        const frag = document.createDocumentFragment();
+        const text = node.nodeValue;
+        let lastIndex = 0; let m;
+        while((m = WORD_REGEX.exec(text))){
+          const [w] = m; const idx = m.index;
+          // Add any text before the word (spaces/punct)
+          if(idx > lastIndex) frag.appendChild(document.createTextNode(text.slice(lastIndex, idx)));
+          // Create the word button
+          const btn = document.createElement('button');
+          btn.className = 'word';
+          btn.type = 'button';
+          btn.textContent = w;
+          btn.setAttribute('data-word', w);
+          frag.appendChild(btn);
+          lastIndex = idx + w.length;
+        }
+        // Remainder
+        if(lastIndex < text.length) frag.appendChild(document.createTextNode(text.slice(lastIndex)));
+        node.replaceWith(frag);
+      });
+    }
+
+    function unwrapWords(root){
+      root.querySelectorAll('button.word').forEach(btn => btn.replaceWith(btn.textContent));
+    }
+
+    // --- Interaction --------------------------------------------------------
+    function attachHandlers(root){
+      root.addEventListener('click', (ev) => {
+        const btn = ev.target.closest('button.word');
+        if(!btn) return;
+        const wordRaw = btn.getAttribute('data-word') || btn.textContent;
+        const word = wordRaw.replace(/["'’“”.,;:!?()\[\]{}]/g, '');
+
+        const openCambridge = document.getElementById('openCambridge').checked || ev.ctrlKey;
+        const useTTS = document.getElementById('useTTS').checked && 'speechSynthesis' in window;
+
+        if(openCambridge){
+          window.open(cambridgeURL(word), '_blank', 'noopener');
+        }
+        if(useTTS){
+          try{
+            speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(word);
+            u.rate = parseFloat(document.getElementById('rate').value || '1');
+            const voices = speechSynthesis.getVoices();
+            const v = getSelectedVoice(voices);
+            if(v) u.voice = v;
+            btn.classList.add('playing');
+            u.onend = () => btn.classList.remove('playing');
+            speechSynthesis.speak(u);
+          }catch(err){
+            console.error(err);
+          }
+        }
+      });
+    }
+
+    // --- Boot ---------------------------------------------------------------
+    (function init(){
+      const article = document.getElementById('book');
+      wrapWordsInNode(article);
+      attachHandlers(article);
+
+      // Controls
+      document.getElementById('toggleWrap').addEventListener('click', () => {
+        const article = document.getElementById('book');
+        unwrapWords(article);
+        wrapWordsInNode(article);
+      });
+
+      if('speechSynthesis' in window){
+        populateVoices();
+        window.speechSynthesis.onvoiceschanged = populateVoices;
+      } else {
+        document.getElementById('useTTS').checked = false;
+        document.getElementById('useTTS').disabled = true;
+      }
+    })();
+  </script>
+</body>
 </html>
-
-
-
-
 
